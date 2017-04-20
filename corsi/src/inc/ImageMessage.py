@@ -16,7 +16,6 @@ class ImageMessage(pygame.sprite.DirtySprite):
 
     def set(self):
         self.image = pygame.image.load("./imgs/" + self.name).convert_alpha()
-        # self.image = pygame.transform.scale(self.image,(Properties.SCREEN_RES[0],Properties.SCREEN_RES[1]))
         self.rect = self.image.get_rect()
 
         self.hide()
@@ -33,7 +32,7 @@ class ImageDone(ImageMessage):
     def __init__(self):
         ImageMessage.__init__(self, "done.png")
 
-        self.image = pygame.transform.smoothscale(self.image, (Properties.SCREEN_RES[0]/9,Properties.SCREEN_RES[0]/9))
+        self.image = pygame.transform.smoothscale(self.image, (Properties.SIDE/9,Properties.SIDE/9))
 
         self.rect.center = (7.5 * (self.image.get_width() * 1.25), 5.8 * (self.image.get_height()* 1.25))
 
