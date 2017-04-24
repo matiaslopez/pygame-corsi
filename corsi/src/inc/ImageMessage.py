@@ -30,15 +30,28 @@ class ImageMessage(pygame.sprite.DirtySprite):
 
 class ImageDone(ImageMessage):
     def __init__(self):
-        ImageMessage.__init__(self, "done.png")
+        ImageMessage.__init__(self, "check-unpressed.png")
 
-        self.image = pygame.transform.smoothscale(self.image, (Properties.SIDE/9,Properties.SIDE/9))
+        self.image_unpressed = self.image
+        self.image_pressed = pygame.image.load("./imgs/check-pressed.png").convert_alpha()
 
+
+        self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (Properties.SIDE/9,Properties.SIDE/9))
+        self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (Properties.SIDE/9,Properties.SIDE/9))
+
+        self.image = self.image_unpressed
         self.rect.center = (7.5 * (self.image.get_width() * 1.25), 5.8 * (self.image.get_height()* 1.25))
 
     def set_callback(self, callback):
         self.callback = callback
 
     def click(self):
+        # print "ImageDone clicked"
+        self.image = self.image_pressed
+        self.dirty = True
+
+    def release_click(self):
+        self.image = self.image_unpressed
+        self.dirty = True
         # print "ImageDone clicked"
         self.callback()

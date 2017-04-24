@@ -56,20 +56,23 @@ class FileLogger():
 
         self.f = open(file_path, 'w')
 
-        str_store = []
-        str_store.append("Kind-Data")
-        str_store.append("Date")
-        str_store.append("trial_id")
-        str_store.append("box_clicked_num")
-        str_store.append("click_num")
-        str_store.append("box_name")
-        str_store.append("expected_box_name")
-        str_store.append("time")
-        str_store.append("correct")
-        str_store.append("x")
-        str_store.append("y")
+        self.log_headers()
 
+    def log_headers(self):
+
+        str_store = ["KIND_OF_LOG","Date","trial_id","col1", "col2","col3","col4","col5","col6","col7","col8"]
         self.write_down(str_store)
+
+        str_store = ["CLICK","Date","trial_id","box_clicked_num",
+            "click_num","box_name","expected_box_name","time","correct","x","y"]
+        self.write_down(str_store)
+
+        str_store = ["RESULT","Date","trial_id","was_correct","number_of_box_clicked"]
+        self.write_down(str_store)
+
+        str_store = ["TRIAL START","Date","trial_id","sequence"]
+        self.write_down(str_store)
+
 
     def log_click(self, trial_id, box_clicked_num, click_num, box_name, expected_box_name, time, correct, x, y):
         str_store = []
@@ -145,12 +148,14 @@ class Corsi():
         self.background = {}
         self.background["pasive"] = pygame.sprite.DirtySprite()
         self.background["pasive"].image = pygame.surface.Surface(Properties.SCREEN_RES)
+        # self.background["pasive"].image = pygame.surface.Surface(self.screen.get_size())
         self.background["pasive"].image.fill([40,40,40])
         self.background["pasive"].rect = self.background["pasive"].image.get_rect()
         self.sprites_group.add(self.background["pasive"], layer=BACKGR_lyr)
 
         self.background["active"] = pygame.sprite.DirtySprite()
         self.background["active"].image = pygame.surface.Surface(Properties.SCREEN_RES)
+        # self.background["active"].image = pygame.surface.Surface(self.screen.get_size())
         self.background["active"].image.fill([80,80,80])
         self.background["active"].rect = self.background["active"].image.get_rect()
         self.sprites_group.add(self.background["active"], layer=BACKGR_lyr)
@@ -192,7 +197,7 @@ class Corsi():
         self.change_to_active_mode(False)
 
     def change_to_active_mode(self, toActive=True):
-        self.change_background(toActive)
+        # self.change_background(toActive)
         if toActive:
             self.state = INTERACTIVE
             self.msgs["done"].show()
@@ -221,6 +226,8 @@ class Corsi():
         self.event_handler.suscribe(pygame.QUIT,
             (lambda ev: [self.logger.log_message("pygame quit"), self.terminar_juego(ev)]))
         self.event_handler.suscribe(pygame.MOUSEBUTTONDOWN, self.click)
+        # self.event_handler.suscribe(pygame.MOUSEBUTTONUP, self.click)
+        self.event_handler.suscribe(pygame.MOUSEBUTTONUP, self.release_click)
 
     # def click(self, res):
     #     (x, y) = pygame.mouse.get_pos()
@@ -260,6 +267,17 @@ class Corsi():
         elif self.state == PASSIVE:
             if self.instruction.visible:
                 self.instruction.hide()
+
+    def release_click(self, res):
+        (x, y) = pygame.mouse.get_pos()
+
+        if self.state == INTERACTIVE:
+            for i in self.sprites_group.get_sprites_from_layer(BTN_lyr):
+                if (i.rect.collidepoint(x, y)):
+                    # print "Click button "
+                    click_in_box = True
+                    i.release_click()
+
 
     def suscribe_box_on(self, box):
         self.boxes_on.append(box)
