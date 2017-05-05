@@ -31,16 +31,55 @@ class ImageMessage(pygame.sprite.DirtySprite):
 class ImageDone(ImageMessage):
     def __init__(self):
         ImageMessage.__init__(self, "check-unpressed.png")
+        SIDE = pygame.display.get_surface().get_rect().width
 
         self.image_unpressed = self.image
         self.image_pressed = pygame.image.load("./imgs/check-pressed.png").convert_alpha()
 
 
-        self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (Properties.SIDE/9,Properties.SIDE/9))
-        self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (Properties.SIDE/9,Properties.SIDE/9))
+        self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (SIDE/9,SIDE/9))
+        self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (SIDE/9,SIDE/9))
 
         self.image = self.image_unpressed
-        self.rect.center = (7.5 * (self.image.get_width() * 1.25), 5.8 * (self.image.get_height()* 1.25))
+        # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 5.8 * (self.image.get_height()* 1.25))
+        self.rect.center = (7 * (self.image.get_width() * 1.25), 3 * (self.image.get_height()* 1.25))
+
+    def set_callback(self, callback):
+        self.callback = callback
+
+    def click(self):
+        # print "ImageDone clicked"
+        self.image = self.image_pressed
+        self.dirty = True
+
+    def release_click(self):
+        self.image = self.image_unpressed
+        self.dirty = True
+        # print "ImageDone clicked"
+        self.callback()
+
+
+class Feedback(ImageMessage):
+
+    def __init__(self, is_ok=True):
+        src = "feed-ok.png" if is_ok else "feed-no.png"
+        ImageMessage.__init__(self, src)
+
+        (x,y) = pygame.display.get_surface().get_rect().size
+        # (x,y) = Properties.SCREEN_RES
+        self.image = pygame.surface.Surface((x*1., y*1.)).convert_alpha()
+        # self.background["pasive"].image = pygame.surface.Surface(self.screen.get_size())
+        self.image.fill([255,250,104,100] if is_ok else [40,40,40,100])
+
+        emoji = pygame.image.load("./imgs/" + src).convert_alpha()
+
+        self.rect = self.image.get_rect()
+        self.image.blit(emoji, (self.rect.centerx-(emoji.get_width()/2), self.rect.centery-(emoji.get_height()/2)))
+
+        self.rect.center = pygame.display.get_surface().get_rect().center
+
+        self.dirty = True
+        self.visible = False
 
     def set_callback(self, callback):
         self.callback = callback

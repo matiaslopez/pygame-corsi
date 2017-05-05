@@ -8,6 +8,7 @@ import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
+
 class Box(pygame.sprite.DirtySprite):
 
     def __init__(self, box_name, position, props):
@@ -24,11 +25,12 @@ class Box(pygame.sprite.DirtySprite):
         self.set()
 
     def set(self):
+        SIDE = pygame.display.get_surface().get_rect().width
         self.image_on = pygame.image.load("./imgs/box-on.png").convert_alpha()
         self.image_off = pygame.image.load("./imgs/box-off.png").convert_alpha()
 
-        self.image_on = pygame.transform.smoothscale(self.image_on, (Properties.SIDE/9,Properties.SIDE/9))
-        self.image_off = pygame.transform.smoothscale(self.image_off, (Properties.SIDE/9,Properties.SIDE/9))
+        self.image_on = pygame.transform.smoothscale(self.image_on, (SIDE/9,SIDE/9))
+        self.image_off = pygame.transform.smoothscale(self.image_off, (SIDE/9,SIDE/9))
         self.image = self.image_off
         self.rect = self.image.get_rect()
 

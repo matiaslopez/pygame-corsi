@@ -6,14 +6,14 @@ import time
 
 import Properties
 
-INIT, STIM, WAIT, ANSW, END = [ p for p in range(5) ]
+INIT, STIM, WAIT, ANSW, FEEDBACK, END = [ p for p in range(6) ]
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
 class Trial():
 
-    def __init__(self, logger,  properties, change_to_active_mode, handle_end):
+    def __init__(self, logger,  properties, change_to_active_mode, handle_end,feedback_handler):
         self.state = None
         self.running = False
         self.handle_end = None
@@ -21,13 +21,14 @@ class Trial():
         self.properties = properties
         self.change_to_active_mode = change_to_active_mode
         self.handle_end = handle_end
+        self.feedback_handler = feedback_handler
 
     def set_boxes(self, boxes, suscribe_box, unsuscribe_box):
         self.boxes = boxes
         self.suscribe_box = suscribe_box
         self.unsuscribe_box = unsuscribe_box
 
-    def start(self, trial_name ,sequence):
+    def start(self, trial_name ,sequence, feedback):
         print "sequence: ", sequence
         self.state = INIT
         self.trial_name  = trial_name
@@ -35,6 +36,7 @@ class Trial():
         self.init_time = current_milli_time()
         self.trial_base_line_time = current_milli_time()
         self.running = True
+        self.feedback = feedback
         self.correct_answer = True
         self.logger.log_trial_start(self.trial_name, sequence)
         # self.logger.
@@ -81,6 +83,18 @@ class Trial():
             self.change_to_active_mode(True)
         elif self.state == ANSW:
             self.change_to_active_mode(False)
+            if self.feedback:
+                print "Showing feedback"
+                self.state = FEEDBACK
+                correct = self.correct_answer & (self.box_clicked_num == len(self.sequence))
+                if correct:
+                    self.feedback_handler["ok"]()
+                else:
+                    self.feedback_handler["no"]()
+            else:
+                self.state = END
+        elif self.state == FEEDBACK:
+            self.feedback_handler["off"]()
             self.state = END
 
         if self.state == END and self.handle_end is not None:
@@ -115,6 +129,9 @@ class Trial():
                         self.stim_index += 1
             elif self.state == WAIT:
                 if self.init_time + self.properties["tprev"]  < current_milli_time():
+                    self.next()
+            elif self.state == FEEDBACK:
+                if self.init_time + self.properties["tfeedback"]  < current_milli_time():
                     self.next()
             # elif self.state == ANSW:
                 # if (self.init_time + self.properties["timeoutextra"] +

@@ -5,6 +5,7 @@ import pygame
 import time
 
 import Properties
+import json
 
 INIT_OP, OP, INIT_FEED, FEED, INIT_SUBJ, SUBJ, END = [ p for p in range(7) ]
 
@@ -47,7 +48,8 @@ class ExpRunner():
             t = str(self.current_trial)
             # print "STARTING WITH trial " + t
 
-            sequence = self.exp_struct["trials"][str(self.current_trial)]
-            self.instruction.set_num(len(sequence), (lambda: self.trial.start(t, sequence)))
+            sequence = self.exp_struct["trials"][str(self.current_trial)][0]
+            feedback = json.loads(self.exp_struct["trials"][str(self.current_trial)][1])
+            self.instruction.set_num(len(sequence), (lambda: self.trial.start(t, sequence, feedback)))
         else:
             self.end_test()

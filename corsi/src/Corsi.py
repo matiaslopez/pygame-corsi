@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+try:
+    import pygame_sdl2
+    pygame_sdl2.import_as_pygame()
+except ImportError:
+    pass
+
 import pygame
 from pygame import time
 #import pygame._view
@@ -36,8 +42,9 @@ pygame.display.set_mode(Properties.SCREEN_RES)
     BOXES_lyr,
     STIM_lyr,
     BTN_lyr,
+    FEED_lyr,
     INST_lyr,
-    ) = [ p for p in range(0,5) ]
+    ) = [ p for p in range(0,6) ]
 
 INTERACTIVE, PASSIVE = [ p for p in range(0,2) ]
 
@@ -70,7 +77,7 @@ class FileLogger():
         str_store = ["RESULT","Date","trial_id","was_correct","number_of_box_clicked"]
         self.write_down(str_store)
 
-        str_store = ["TRIAL START","Date","trial_id","sequence"]
+        str_store = ["TRIAL START","Date","trial_id","sequence", "Feedback"]
         self.write_down(str_store)
 
 
@@ -153,14 +160,18 @@ class Corsi():
         self.background["pasive"].rect = self.background["pasive"].image.get_rect()
         self.sprites_group.add(self.background["pasive"], layer=BACKGR_lyr)
 
-        self.background["active"] = pygame.sprite.DirtySprite()
-        self.background["active"].image = pygame.surface.Surface(Properties.SCREEN_RES)
-        # self.background["active"].image = pygame.surface.Surface(self.screen.get_size())
-        self.background["active"].image.fill([80,80,80])
-        self.background["active"].rect = self.background["active"].image.get_rect()
-        self.sprites_group.add(self.background["active"], layer=BACKGR_lyr)
+        # self.background["active"] = pygame.sprite.DirtySprite()
+        # self.background["active"].image = pygame.surface.Surface(Properties.SCREEN_RES)
+        # # self.background["active"].image = pygame.surface.Surface(self.screen.get_size())
+        # self.background["active"].image.fill([80,80,80])
+        # self.background["active"].rect = self.background["active"].image.get_rect()
+        # self.sprites_group.add(self.background["active"], layer=BACKGR_lyr)
 
-        self.background["active"].visible = False
+        # self.background["active"].visible = False
+        self.feedback_ok = Feedback()
+        self.feedback_no = Feedback(False)
+        self.sprites_group.add(self.feedback_ok, layer=FEED_lyr)
+        self.sprites_group.add(self.feedback_no, layer=FEED_lyr)
 
         self.msgs = {}
         self.boxes = {}
@@ -183,7 +194,9 @@ class Corsi():
 
         self.trial = Trial(self.logger, self.experiment["properties"],
                 self.change_to_active_mode,
-                None)
+                None,
+                {"ok": self.feedback_ok.show, "no": self.feedback_no.show,
+                "off": (lambda: [self.feedback_ok.hide(), self.feedback_no.hide()])})
         self.exp_runner = ExpRunner(self.experiment, self.trial, self.boxes)
         self.exp_runner.end_test = self.terminar_juego
         self.exp_runner.instruction = self.instruction
