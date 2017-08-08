@@ -23,11 +23,12 @@ class ExpRunner():
         self.num_consecutive_lost = 0
         self.waiting = True
 
-    def next_trial(self, correct):
-        if correct:
-            self.num_consecutive_lost = 0
-        else:
-            self.num_consecutive_lost += 1
+    def next_trial(self, correct, feedback=False):
+        if not feedback:
+            if correct:
+                self.num_consecutive_lost = 0
+            else:
+                self.num_consecutive_lost += 1
 
         # print "NEXT - Num consecutive_lost", self.num_consecutive_lost
 

@@ -32,17 +32,18 @@ class ImageDone(ImageMessage):
     def __init__(self):
         ImageMessage.__init__(self, "check-unpressed.png")
         SIDE = pygame.display.get_surface().get_rect().width
+        SIDE = pygame.display.get_surface().get_rect().height/6
 
         self.image_unpressed = self.image
         self.image_pressed = pygame.image.load("./imgs/check-pressed.png").convert_alpha()
 
 
-        self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (SIDE/9,SIDE/9))
-        self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (SIDE/9,SIDE/9))
+        self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (SIDE,SIDE))
+        self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (SIDE,SIDE))
 
         self.image = self.image_unpressed
-        # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 5.8 * (self.image.get_height()* 1.25))
-        self.rect.center = (7 * (self.image.get_width() * 1.25), 3 * (self.image.get_height()* 1.25))
+        self.rect.center = (8.5 * (self.image.get_width() * 1.25), 5 * (self.image.get_height()* 1.25))
+        # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 6 * (self.image.get_height()* 1.25))
 
     def set_callback(self, callback):
         self.callback = callback

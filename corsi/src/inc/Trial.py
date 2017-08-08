@@ -29,7 +29,7 @@ class Trial():
         self.unsuscribe_box = unsuscribe_box
 
     def start(self, trial_name ,sequence, feedback):
-        print "sequence: ", sequence
+        # print "sequence: ", sequence
         self.state = INIT
         self.trial_name  = trial_name
         self.sequence = list(sequence)
@@ -38,7 +38,8 @@ class Trial():
         self.running = True
         self.feedback = feedback
         self.correct_answer = True
-        self.logger.log_trial_start(self.trial_name, sequence)
+        self.current_answer = ""
+        self.logger.log_trial_start(self.trial_name, sequence, feedback)
         # self.logger.
 
     def usr_answer(self, box_name, pos):
@@ -48,11 +49,13 @@ class Trial():
             delta = current_milli_time() - self.init_time
             correct = None
             self.click_num += 1
-            expected_box_name = self.sequence[min(self.box_clicked_num, len(self.sequence)-1)]
+            # expected_box_name = self.sequence[min(self.box_clicked_num, len(self.sequence)-1)]
+            expected_box_name = self.sequence[self.box_clicked_num] if self.box_clicked_num < len(self.sequence) else "-"
             if box_name is not None:
                 if self.box_clicked_num < len(self.sequence):
                     correct = box_name == expected_box_name
                     self.correct_answer &=  correct
+                    self.current_answer += box_name
                     # print "CORRECT" if correct else "INCORRECT"
                 self.box_clicked_num += 1
             # print "ANSWER in: ", delta
@@ -84,7 +87,7 @@ class Trial():
         elif self.state == ANSW:
             self.change_to_active_mode(False)
             if self.feedback:
-                print "Showing feedback"
+                # print "Showing feedback"
                 self.state = FEEDBACK
                 correct = self.correct_answer & (self.box_clicked_num == len(self.sequence))
                 if correct:
@@ -101,8 +104,9 @@ class Trial():
             # print "Summary, self.correct_answer", self.correct_answer
             # print "All clicked: ", self.box_clicked_num == len(self.sequence)
             correct = self.correct_answer & (self.box_clicked_num == len(self.sequence))
-            self.logger.log_trial_result(self.trial_name, "CORRECT" if correct else "INCORRECT", self.box_clicked_num)
-            self.handle_end(correct)
+            self.logger.log_trial_result(self.trial_name, "CORRECT" if correct else "INCORRECT", self.box_clicked_num,
+                self.click_num, "".join(self.sequence), self.current_answer)
+            self.handle_end(correct, self.feedback)
         # print " - new state: ", self.state
 
 

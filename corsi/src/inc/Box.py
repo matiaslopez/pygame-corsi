@@ -26,16 +26,17 @@ class Box(pygame.sprite.DirtySprite):
 
     def set(self):
         SIDE = pygame.display.get_surface().get_rect().width
+        SIDE = pygame.display.get_surface().get_rect().height/6
         self.image_on = pygame.image.load("./imgs/box-on.png").convert_alpha()
         self.image_off = pygame.image.load("./imgs/box-off.png").convert_alpha()
 
-        self.image_on = pygame.transform.smoothscale(self.image_on, (SIDE/9,SIDE/9))
-        self.image_off = pygame.transform.smoothscale(self.image_off, (SIDE/9,SIDE/9))
+        self.image_on = pygame.transform.smoothscale(self.image_on, (SIDE,SIDE))
+        self.image_off = pygame.transform.smoothscale(self.image_off, (SIDE,SIDE))
         self.image = self.image_off
         self.rect = self.image.get_rect()
 
         (x, y) = self.position
-        self.rect.center = (x * (self.image.get_width() * 1.25), y * (self.image.get_height()* 1.25))
+        self.rect.center = (x * (self.image.get_width() * 1.25) + 100, y * (self.image.get_height()* 1.25) - 20)
         self.is_on = False
 
     def on(self):

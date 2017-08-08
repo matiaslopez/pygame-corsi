@@ -74,7 +74,8 @@ class FileLogger():
             "click_num","box_name","expected_box_name","time","correct","x","y"]
         self.write_down(str_store)
 
-        str_store = ["RESULT","Date","trial_id","was_correct","number_of_box_clicked"]
+        str_store = ["RESULT","Date","trial_id","was_correct","number_of_box_clicked",
+            "number_of_clicks", "expected_sequence", "result_sequence"]
         self.write_down(str_store)
 
         str_store = ["TRIAL START","Date","trial_id","sequence", "Feedback"]
@@ -86,6 +87,7 @@ class FileLogger():
         str_store.append("CLICK")
         str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
         str_store.append(str(trial_id))
+        str_store.append(str(box_clicked_num))
         str_store.append(str(click_num))
         str_store.append(str(box_name))
         str_store.append(str(expected_box_name))
@@ -96,22 +98,27 @@ class FileLogger():
 
         self.write_down(str_store)
 
-    def log_trial_result(self, trial_id, correct, box_clicked_num):
+    def log_trial_result(self, trial_id, correct, box_clicked_num,
+                number_of_clicks, expected_sequence, result_sequence):
         str_store = []
         str_store.append("RESULT")
         str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
         str_store.append(str(trial_id))
         str_store.append(str(correct))
         str_store.append(str(box_clicked_num))
+        str_store.append(str(number_of_clicks))
+        str_store.append(str(expected_sequence))
+        str_store.append(str(result_sequence))
 
         self.write_down(str_store)
 
-    def log_trial_start(self, trial_id, sequence):
+    def log_trial_start(self, trial_id, sequence, feedback):
         str_store = []
         str_store.append("TRIAL START")
         str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
         str_store.append(str(trial_id))
         str_store.append(str(sequence))
+        str_store.append(str(feedback))
 
         self.write_down(str_store)
 

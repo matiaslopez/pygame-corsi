@@ -1,9 +1,9 @@
 {
     "properties": {
         "tprev": 500,
-        "tstim": 700,
-        "tinterstim": 500,
-        "tansweron": 500,
+        "tstim": 1500,
+        "tinterstim": 750,
+        "tansweron": 800,
         "tfeedback": 1500
     },
     "box_positions": {
