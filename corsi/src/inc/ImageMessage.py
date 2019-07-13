@@ -43,6 +43,7 @@ class ImageDone(ImageMessage):
 
         self.image = self.image_unpressed
         self.rect.center = (8.5 * (self.image.get_width() * 1.25), 5 * (self.image.get_height()* 1.25))
+        self.rect.center = (int(1 * pygame.display.get_surface().get_rect().width), int(1 * pygame.display.get_surface().get_rect().height))
         # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 6 * (self.image.get_height()* 1.25))
 
     def set_callback(self, callback):

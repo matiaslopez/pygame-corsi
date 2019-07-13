@@ -31,13 +31,6 @@ from inc.Trial import *
 SUBJECT_NAME = raw_input('Nombre: ')
 # SUBJECT_NAME = 'Nombre: '
 
-pygame.init()
-# pygame.display.set_mode(Properties.SCREEN_RES, pygame.FULLSCREEN)
-pygame.display.set_mode(Properties.SCREEN_RES)
-
-#~ BACKGR_lyr: Background
-#~ STIM_lyr: Stimulus
-
 (BACKGR_lyr,
     BOXES_lyr,
     STIM_lyr,
@@ -161,8 +154,8 @@ class Corsi():
 
         self.background = {}
         self.background["pasive"] = pygame.sprite.DirtySprite()
-        self.background["pasive"].image = pygame.surface.Surface(Properties.SCREEN_RES)
-        # self.background["pasive"].image = pygame.surface.Surface(self.screen.get_size())
+        # self.background["pasive"].image = pygame.surface.Surface(Properties.SCREEN_RES)
+        self.background["pasive"].image = pygame.surface.Surface(self.screen.get_size())
         self.background["pasive"].image.fill([40,40,40])
         self.background["pasive"].rect = self.background["pasive"].image.get_rect()
         self.sprites_group.add(self.background["pasive"], layer=BACKGR_lyr)
@@ -346,9 +339,17 @@ class Corsi():
 def main():
     json_data=open("input.json").read()
     experiment = json.loads(json_data)
-    # print experiment
+    SCREEN_RES = (int(experiment["screen_res"]["x"]), int(experiment["screen_res"]["y"]))
+
+    pygame.init()
+    pygame.display.set_mode(SCREEN_RES)
+
+
     game = Corsi(experiment)
     game.run()
+
+    print "Saliendo"
+    pygame.quit()
 
 if __name__ == '__main__':
     main()
