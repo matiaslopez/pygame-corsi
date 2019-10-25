@@ -1,7 +1,7 @@
 
 
 import pygame
-import trials_raw
+import measurements
 # import trials_raw_fede as trials_raw
 
 surf = None
@@ -28,8 +28,8 @@ def make_empty_board():
     f = pygame.font.get_default_font()
     font = pygame.font.Font(f, 20)
 
-    for (k, (x,y)) in trials_raw.box_positions.iteritems():
-        print (k,(x,y))
+    for (k, (x,y)) in measurements.box_positions.items():
+        print((k,(x,y)))
         (left, top, width, height) = (
                             margin + (margin + box_side) * (y-1),
                             margin + (margin + box_side) * (x-1),
@@ -45,13 +45,13 @@ def make_empty_board():
     pygame.display.flip()
 
 def draw_sequence(sequence):
-    for i in xrange(len(sequence)-1):
+    for i in range(len(sequence)-1):
         draw_segment(sequence[i],sequence[i+1])
 
 def draw_segment(s, d):
     global surf
-    s = trials_raw.box_positions[s]
-    d = trials_raw.box_positions[d]
+    s = measurements.box_positions[s]
+    d = measurements.box_positions[d]
     s = (margin + (margin + box_side) * (s[1]-1) + box_side/2.0, margin + (margin + box_side) * (s[0]-1) + box_side/2.0)
     d = (margin + (margin + box_side) * (d[1]-1) + box_side/2.0, margin + (margin + box_side) * (d[0]-1) + box_side/2.0)
 
@@ -70,12 +70,12 @@ def end_draw():
 def save_board(file_name):
     pygame.image.save(surf, "output/%s.png" % (file_name,))
 
-def write_name(gr, bl, num, seq):
+def write_name(num, seq):
     pygame.font.init()
     f = pygame.font.get_default_font()
     font = pygame.font.Font(f, 12)
 
-    msg = "Group %d - Block %d - Num %d - %s" % (gr, bl, num, seq)
+    msg = "Num %d - %s" % (num, seq)
     text = font.render(msg, 1, (250, 250, 250))
     textrec = text.get_width()
     surf.blit(text, (w/2.0-(textrec/2.0),
@@ -84,17 +84,17 @@ def write_name(gr, bl, num, seq):
     pygame.display.flip()
 
 
-def generate_all_boards():
-    for (group, exp) in enumerate(trials_raw.trials_group):
-        for (block, num, seq) in exp:
-            init_draw()
-            make_empty_board()
-            draw_sequence(seq)
-            write_name(group+1, block, num, "".join(seq))
+def generate_all_boards(b):
+    # for (group, exp) in enumerate(b): # b=trials_raw.trials_group
+    for (num, seq) in b:
+        init_draw()
+        make_empty_board()
+        draw_sequence(seq)
+        write_name(num, "".join(seq))
 
-            file_name = "G%d-B%d-N%d_%s" % (group+1, block, num, "".join(seq))
+        file_name = "N%d_%s" % (num, "".join(seq))
 
-            save_board(file_name)
+        save_board(file_name)
 
 
 pygame.display.quit()
