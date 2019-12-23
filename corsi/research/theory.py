@@ -27,6 +27,6 @@ for i in range(1, 9+1):
     print ("For ", i, " there are ", c, "different trials")
 
 
-with open("theroy.csv", 'w') as fp:
+with open("theory.csv", 'w') as fp:
     a = csv.writer(fp, delimiter=';')
     a.writerows(data)
