@@ -58,6 +58,9 @@ class FileLogger():
 
         self.log_headers()
 
+    def get_str_time(self):
+        return str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S.%f] "))
+
     def log_headers(self):
 
         str_store = ["KIND_OF_LOG","Date","trial_id","col1", "col2","col3","col4","col5","col6","col7","col8"]
@@ -78,7 +81,7 @@ class FileLogger():
     def log_click(self, trial_id, box_clicked_num, click_num, box_name, expected_box_name, time, correct, x, y):
         str_store = []
         str_store.append("CLICK")
-        str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
+        str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(box_clicked_num))
         str_store.append(str(click_num))
@@ -95,7 +98,7 @@ class FileLogger():
                 number_of_clicks, expected_sequence, result_sequence):
         str_store = []
         str_store.append("RESULT")
-        str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
+        str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(correct))
         str_store.append(str(box_clicked_num))
@@ -108,7 +111,7 @@ class FileLogger():
     def log_trial_start(self, trial_id, sequence, feedback):
         str_store = []
         str_store.append("TRIAL START")
-        str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
+        str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(sequence))
         str_store.append(str(feedback))
@@ -118,14 +121,14 @@ class FileLogger():
     def log_invalid_press(self):
         str_store = []
         str_store.append("INVALID PRESS")
-        str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
+        str_store.append(self.get_str_time())
 
         self.write_down(str_store)
 
     def log_message(self, message):
         str_store = []
         str_store.append(message.upper())
-        str_store.append(str(datetime.datetime.today().strftime("[%Y-%m-%d %H.%M.%S] ")))
+        str_store.append(self.get_str_time())
 
         self.write_down(str_store)
 
@@ -342,7 +345,8 @@ def main():
     SCREEN_RES = (int(experiment["screen_res"]["x"]), int(experiment["screen_res"]["y"]))
 
     pygame.init()
-    pygame.display.set_mode(SCREEN_RES)
+    # pygame.display.set_mode(SCREEN_RES)
+    pygame.display.set_mode(SCREEN_RES,pygame.FULLSCREEN)
 
 
     game = Corsi(experiment)
