@@ -369,9 +369,9 @@ def main():
 
 
 
-    print(experiment.keys())
-    print(experiment)
-    sys.exit(1)
+    # print(experiment.keys())
+    # print(experiment)
+    # sys.exit(1)
 
 
     SCREEN_RES = (int(experiment["screen_res"]["x"]), int(experiment["screen_res"]["y"]))
