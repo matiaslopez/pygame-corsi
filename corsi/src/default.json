@@ -1,6 +1,9 @@
 {
     "screen_res": {"x": 1200, "y":700},
     "cut_off": 5,
+    "protocolo": {
+        "nombre": "Default"
+    },
     "properties": {
         "tprev": 500,
         "tstim": 1500,

@@ -33,7 +33,8 @@ class ExpRunner():
         # print "NEXT - Num consecutive_lost", self.num_consecutive_lost
 
         if self.waiting == True:
-            if self.num_consecutive_lost < self.exp_struct["cut_off"]:
+            if ((self.num_consecutive_lost < self.exp_struct["cut_off"]) or 
+                (self.exp_struct["cut_off"]==0)):
                 self.next()
             else:
                 self.end_test()

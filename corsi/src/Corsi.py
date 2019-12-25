@@ -6,6 +6,7 @@ except ImportError:
     pass
 
 import pygame
+import sys
 from pygame import time
 #import pygame._view
 #from pygame.locals import *
@@ -28,8 +29,8 @@ from inc.Instruction import *
 # from inc.ImageMessageBar import *
 from inc.Trial import *
 
-SUBJECT_NAME = raw_input('Nombre: ')
-# SUBJECT_NAME = 'Nombre: '
+# SUBJECT_NAME = raw_input('Nombre: ')
+SUBJECT_NAME = 'Nombre: '
 
 (BACKGR_lyr,
     BOXES_lyr,
@@ -340,8 +341,39 @@ class Corsi():
             pygame.display.flip()
 
 def main():
-    json_data=open("input.json").read()
+    json_data=open("default.json").read()
     experiment = json.loads(json_data)
+    if len(sys.argv) == 2:
+        print "Cargando opciones de ", sys.argv[1]
+    
+        prot_f=open(sys.argv[1]).read()
+        prot_data = json.loads(prot_f)
+        experiment["trials"] = prot_data["trials"]
+        if prot_data.has_key("protocolo"):
+            if prot_data["protocolo"].has_key("nombre"):
+                experiment["protocolo"]["nombre"] = prot_data["protocolo"]["nombre"] 
+
+        if prot_data.has_key("properties"):
+            if prot_data["properties"].has_key("tiempoEncendidoLuz"):
+                experiment["properties"]["tstim"] = prot_data["properties"]["tiempoEncendidoLuz"] 
+            if prot_data["properties"].has_key("tiempoEntreLuces"):
+                experiment["properties"]["tinterstim"] = prot_data["properties"]["tiempoEntreLuces"] 
+
+        # Maxi
+        # "tiempoComienzaIntento": 1000,
+        # "timeoutRespuesta": 35000
+        # Pygame
+        # "tprev": 500,
+        # "tansweron": 800,
+        # "tfeedback": 1500
+
+
+
+    print(experiment.keys())
+    print(experiment)
+    sys.exit(1)
+
+
     SCREEN_RES = (int(experiment["screen_res"]["x"]), int(experiment["screen_res"]["y"]))
 
     pygame.init()
