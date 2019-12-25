@@ -70,12 +70,12 @@ def end_draw():
 def save_board(file_name):
     pygame.image.save(surf, "output/%s.png" % (file_name,))
 
-def write_name(num, seq):
+def write_name(num, seq, protocol_str=""):
     pygame.font.init()
     f = pygame.font.get_default_font()
     font = pygame.font.Font(f, 12)
 
-    msg = "Num %d - %s" % (num, seq)
+    msg = "%s Num %d - %s" % (protocol_str, num, seq)
     text = font.render(msg, 1, (250, 250, 250))
     textrec = text.get_width()
     surf.blit(text, (w/2.0-(textrec/2.0),
@@ -84,15 +84,15 @@ def write_name(num, seq):
     pygame.display.flip()
 
 
-def generate_all_boards(b):
+def generate_all_boards(b, protocol_str=""):
     # for (group, exp) in enumerate(b): # b=trials_raw.trials_group
     for (num, seq) in b:
         init_draw()
         make_empty_board()
         draw_sequence(seq)
-        write_name(num, "".join(seq))
+        write_name(num, "".join(seq), protocol_str)
 
-        file_name = "N%d_%s" % (num, "".join(seq))
+        file_name = "{}N{02d}_{}".format(protocol_str, num, "".join(seq))
 
         save_board(file_name)
 
