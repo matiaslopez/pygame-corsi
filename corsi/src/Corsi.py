@@ -45,7 +45,7 @@ INTERACTIVE, PASSIVE = [ p for p in range(0,2) ]
 
 class FileLogger():
 
-    def __init__(self):
+    def __init__(self, protocol_name):
         import os
         directory = os.path.join(os.getcwd(), 'logs')
         if not os.path.exists(directory):
@@ -56,7 +56,8 @@ class FileLogger():
         file_path = os.path.join(directory, file_name)
 
         self.f = open(file_path, 'w')
-
+        self.protocol_name = protocol_name
+        self.subject = SUBJECT_NAME
         self.log_headers()
 
     def get_str_time(self):
@@ -64,25 +65,25 @@ class FileLogger():
 
     def log_headers(self):
 
-        str_store = ["KIND_OF_LOG","Date","trial_id","col1", "col2","col3","col4","col5","col6","col7","col8"]
+        str_store = ["KIND_OF_LOG", "PROTOCOL", "USER","Date","trial_id","col1", "col2","col3","col4","col5","col6","col7","col8"]
         self.write_down(str_store)
 
-        str_store = ["CLICK","Date","trial_id","box_clicked_num",
+        str_store = ["CLICK", "PROTOCOL", "USER","Date","trial_id","box_clicked_num",
             "click_num","box_name","expected_box_name","time","correct","x","y"]
         self.write_down(str_store)
 
-        str_store = ["RESULT","Date","trial_id","was_correct","number_of_box_clicked",
+        str_store = ["RESULT", "PROTOCOL", "USER","Date","trial_id","was_correct","number_of_box_clicked",
             "number_of_clicks", "expected_sequence", "result_sequence"]
         self.write_down(str_store)
 
-        str_store = ["TRIAL START","Date","trial_id","sequence", "Feedback"]
+        str_store = ["TRIAL START", "PROTOCOL", "USER","Date","trial_id","sequence", "Feedback"]
         self.write_down(str_store)
 
 
     def log_click(self, trial_id, box_clicked_num, click_num, box_name, expected_box_name, time, correct, x, y):
         str_store = []
-        str_store.append("CLICK")
-        str_store.append(self.get_str_time())
+        # str_store.append()
+        # str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(box_clicked_num))
         str_store.append(str(click_num))
@@ -93,13 +94,13 @@ class FileLogger():
         str_store.append(str(x))
         str_store.append(str(y))
 
-        self.write_down(str_store)
+        self.write_down(str_store, "CLICK")
 
     def log_trial_result(self, trial_id, correct, box_clicked_num,
                 number_of_clicks, expected_sequence, result_sequence):
         str_store = []
-        str_store.append("RESULT")
-        str_store.append(self.get_str_time())
+        # str_store.append()
+        # str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(correct))
         str_store.append(str(box_clicked_num))
@@ -107,33 +108,35 @@ class FileLogger():
         str_store.append(str(expected_sequence))
         str_store.append(str(result_sequence))
 
-        self.write_down(str_store)
+        self.write_down(str_store, "RESULT")
 
     def log_trial_start(self, trial_id, sequence, feedback):
         str_store = []
-        str_store.append("TRIAL START")
-        str_store.append(self.get_str_time())
+        # str_store.append()
+        # str_store.append(self.get_str_time())
         str_store.append(str(trial_id))
         str_store.append(str(sequence))
         str_store.append(str(feedback))
 
-        self.write_down(str_store)
+        self.write_down(str_store, "TRIAL START")
 
     def log_invalid_press(self):
         str_store = []
-        str_store.append("INVALID PRESS")
-        str_store.append(self.get_str_time())
+        # str_store.append()
+        # str_store.append(self.get_str_time())
 
-        self.write_down(str_store)
+        self.write_down(str_store, "INVALID PRESS")
 
     def log_message(self, message):
         str_store = []
-        str_store.append(message.upper())
-        str_store.append(self.get_str_time())
+        # str_store.append()
+        # str_store.append(self.get_str_time())
 
-        self.write_down(str_store)
+        self.write_down(str_store, message.upper())
 
-    def write_down(self, arr):
+    def write_down(self, arr, msg=None):
+        if msg:
+            arr = [msg, self.protocol_name, self.subject, self.get_str_time()] + arr
         str_store = ";".join(arr)
         str_store = str_store + ";\n"
 
@@ -144,7 +147,7 @@ class FileLogger():
 
 class Corsi():
     def __init__(self, experiment):
-        self.logger = FileLogger()
+        self.logger = FileLogger(experiment["protocolo"]["nombre"])
 
         self.screen = pygame.display.get_surface()
 
@@ -345,19 +348,19 @@ def main():
     experiment = json.loads(json_data)
     if len(sys.argv) == 2:
         print "Cargando opciones de ", sys.argv[1]
-    
+
         prot_f=open(sys.argv[1]).read()
         prot_data = json.loads(prot_f)
         experiment["trials"] = prot_data["trials"]
         if prot_data.has_key("protocolo"):
             if prot_data["protocolo"].has_key("nombre"):
-                experiment["protocolo"]["nombre"] = prot_data["protocolo"]["nombre"] 
+                experiment["protocolo"]["nombre"] = prot_data["protocolo"]["nombre"]
 
         if prot_data.has_key("properties"):
             if prot_data["properties"].has_key("tiempoEncendidoLuz"):
-                experiment["properties"]["tstim"] = prot_data["properties"]["tiempoEncendidoLuz"] 
+                experiment["properties"]["tstim"] = prot_data["properties"]["tiempoEncendidoLuz"]
             if prot_data["properties"].has_key("tiempoEntreLuces"):
-                experiment["properties"]["tinterstim"] = prot_data["properties"]["tiempoEntreLuces"] 
+                experiment["properties"]["tinterstim"] = prot_data["properties"]["tiempoEntreLuces"]
 
         # Maxi
         # "tiempoComienzaIntento": 1000,
