@@ -36,7 +36,8 @@ class Box(pygame.sprite.DirtySprite):
         self.rect = self.image.get_rect()
 
         (x, y) = self.position
-        self.rect.center = (x * (self.image.get_width() * 1.25) + 100, y * (self.image.get_height()* 1.25) - 20)
+        self.rect.center = (x * (self.image.get_width() * 1.25) + 150,
+                            y * (self.image.get_height()* 1.25) - 20)
         self.is_on = False
 
     def on(self):

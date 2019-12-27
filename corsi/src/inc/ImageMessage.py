@@ -29,11 +29,12 @@ class ImageMessage(pygame.sprite.DirtySprite):
         self.dirty = True
 
 class ImageDone(ImageMessage):
-    def __init__(self):
+    def __init__(self, rightside=True):
         ImageMessage.__init__(self, "check-unpressed.png")
-        SIDE = pygame.display.get_surface().get_rect().width
+        # SIDE = pygame.display.get_surface().get_rect().width
         SIDE = pygame.display.get_surface().get_rect().height/6
 
+        self.side_name = "Derecho" if rightside else "Izquiero"
         self.image_unpressed = self.image
         self.image_pressed = pygame.image.load("./imgs/check-pressed.png").convert_alpha()
 
@@ -41,9 +42,13 @@ class ImageDone(ImageMessage):
         self.image_unpressed = pygame.transform.smoothscale(self.image_unpressed, (SIDE,SIDE))
         self.image_pressed = pygame.transform.smoothscale(self.image_pressed, (SIDE,SIDE))
 
+        self.rect = self.image_unpressed.get_rect()
+
         self.image = self.image_unpressed
-        self.rect.center = (8.5 * (self.image.get_width() * 1.25), 5 * (self.image.get_height()* 1.25))
-        self.rect.center = (int(1 * pygame.display.get_surface().get_rect().width), int(1 * pygame.display.get_surface().get_rect().height))
+        # self.rect.center = (8.5 * (self.image.get_width() * 1.25), 5 * (self.image.get_height()* 1.25))
+        self.rect.center = (int(1 * pygame.display.get_surface().get_rect().width* (.92 if rightside else .08)),
+                            int(1 * pygame.display.get_surface().get_rect().height/2))
+        print(self.rect.center, self.side_name)
         # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 6 * (self.image.get_height()* 1.25))
 
     def set_callback(self, callback):
@@ -58,7 +63,7 @@ class ImageDone(ImageMessage):
         self.image = self.image_unpressed
         self.dirty = True
         # print "ImageDone clicked"
-        self.callback()
+        self.callback(self.side_name)
 
 
 class Feedback(ImageMessage):

@@ -97,7 +97,7 @@ class FileLogger():
         self.write_down(str_store, "CLICK")
 
     def log_trial_result(self, trial_id, correct, box_clicked_num,
-                number_of_clicks, expected_sequence, result_sequence):
+                number_of_clicks, expected_sequence, result_sequence, side_clicked):
         str_store = []
         # str_store.append()
         # str_store.append(self.get_str_time())
@@ -107,6 +107,7 @@ class FileLogger():
         str_store.append(str(number_of_clicks))
         str_store.append(str(expected_sequence))
         str_store.append(str(result_sequence))
+        str_store.append(side_clicked)
 
         self.write_down(str_store, "RESULT")
 
@@ -187,7 +188,8 @@ class Corsi():
         self.instruction.hide()
         self.sprites_group.add(self.instruction, layer=INST_lyr)
 
-        self.msgs["done"] =  ImageDone()
+        self.msgs["doneDer"] =  ImageDone()
+        self.msgs["doneIzq"] =  ImageDone(False)
         for v in self.msgs.itervalues():
             self.sprites_group.add(v, layer=BTN_lyr)
 
@@ -212,7 +214,8 @@ class Corsi():
         self.boxes_on = []
 
 
-        self.msgs["done"].set_callback(self.trial.next_by_usr)
+        self.msgs["doneDer"].set_callback(self.trial.next_by_usr)
+        self.msgs["doneIzq"].set_callback(self.trial.next_by_usr)
 
         self.change_to_active_mode(False)
 
@@ -220,10 +223,12 @@ class Corsi():
         # self.change_background(toActive)
         if toActive:
             self.state = INTERACTIVE
-            self.msgs["done"].show()
+            self.msgs["doneDer"].show()
+            self.msgs["doneIzq"].show()
         else:
             self.state = PASSIVE
-            self.msgs["done"].hide()
+            self.msgs["doneDer"].hide()
+            self.msgs["doneIzq"].hide()
 
 
     def change_background(self, toActive=True):
@@ -264,6 +269,7 @@ class Corsi():
 
     def click(self, res):
         (x, y) = pygame.mouse.get_pos()
+        # print "Click ", (x, y)
 
         if self.state == INTERACTIVE:
             click_in_box = False

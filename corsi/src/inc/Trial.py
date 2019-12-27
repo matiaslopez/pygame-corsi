@@ -66,9 +66,10 @@ class Trial():
         else:
             return False
 
-    def next_by_usr(self):
+    def next_by_usr(self, side=""):
         if self.state == ANSW:
             self.next()
+            self.side_clicked = side
 
 
     def next(self):
@@ -105,7 +106,7 @@ class Trial():
             # print "All clicked: ", self.box_clicked_num == len(self.sequence)
             correct = self.correct_answer & (self.box_clicked_num == len(self.sequence))
             self.logger.log_trial_result(self.trial_name, "CORRECT" if correct else "INCORRECT", self.box_clicked_num,
-                self.click_num, "".join(self.sequence), self.current_answer)
+                self.click_num, "".join(self.sequence), self.current_answer, self.side_clicked)
             self.handle_end(correct, self.feedback)
         # print " - new state: ", self.state
 
