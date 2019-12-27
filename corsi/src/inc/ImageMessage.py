@@ -45,11 +45,8 @@ class ImageDone(ImageMessage):
         self.rect = self.image_unpressed.get_rect()
 
         self.image = self.image_unpressed
-        # self.rect.center = (8.5 * (self.image.get_width() * 1.25), 5 * (self.image.get_height()* 1.25))
         self.rect.center = (int(1 * pygame.display.get_surface().get_rect().width* (.92 if rightside else .08)),
                             int(1 * pygame.display.get_surface().get_rect().height/2))
-        print(self.rect.center, self.side_name)
-        # self.rect.center = (7.5 * (self.image.get_width() * 1.25), 6 * (self.image.get_height()* 1.25))
 
     def set_callback(self, callback):
         self.callback = callback

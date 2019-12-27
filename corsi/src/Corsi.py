@@ -29,8 +29,8 @@ from inc.Instruction import *
 # from inc.ImageMessageBar import *
 from inc.Trial import *
 
-# SUBJECT_NAME = raw_input('Nombre: ')
-SUBJECT_NAME = 'Nombre: '
+SUBJECT_NAME = raw_input('Nombre: ')
+# SUBJECT_NAME = 'Nombre: '
 
 (BACKGR_lyr,
     BOXES_lyr,
