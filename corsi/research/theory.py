@@ -28,7 +28,7 @@ data.append(["Trial","NumberMoves","Leftness","Frontness","Length"])
 max_distance = 0
 selected_trials = [['X',0],['X',0],['X',0],['X',0],['X',0]]
 data_trial = []
-for i in range(1,5,1):
+for i in range(1,6):
 	max_distance = 0
 	c = 0
 	for seq in itertools.combinations(letters,i):
@@ -41,7 +41,7 @@ for i in range(1,5,1):
 						trials_raw.frontness(trial),    # frontness length
 						sum(trials_raw.distances(trial)),    # length
 			]) #ntrial,  umber, leftness, frontness, length
-			if notIsSubsequence(trial,selected_trials) and sum(trials_raw.distances(trial)) > max_distance:
+			if sum(trials_raw.distances(trial)) >= max_distance: # and notIsSubsequence(trial,selected_trials):
 				print("Va ganando ","".join(trial)," con distancia: ",sum(trials_raw.distances(trial)))
 				max_distance = sum(trials_raw.distances(trial))
 				data_trial = ["".join(trial),sum(trials_raw.distances(trial))]
