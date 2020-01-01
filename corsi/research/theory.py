@@ -5,7 +5,7 @@ import statistics
 import random
 from random import shuffle
 
-#Chequea que el trial no sea subsecuencia de los ya cargados
+#Chequea que el todo trial no sea subsecuencia de los ya cargados (pero no partes de el)
 def notIsSubsequence(trial,selected_trials):
 	trial = "".join(trial)
 	print (selected_trials)	
@@ -19,7 +19,7 @@ def notIsSubsequence(trial,selected_trials):
 	return True
 
 #Chequea que el trial no contenga subsecuencias (tomando de a 2) de los ya cargados
-def notHasSubsequence(trial,selected_trials):
+def notHasSubsequence(trial,selected_trials): #Para construccion de mayor a menor
 	print ("Analizo: "+"".join(trial))
 	#Veo si no hay substrings con los anteriores (los de mayor longitud)
 	for j in range(len(trial),len(selected_trials)):
@@ -40,8 +40,8 @@ def notHasSubsequence(trial,selected_trials):
 
 	return True
 
-#Chequea si el trial que voy a cargar tiene subsecuencias ya utilizadas
-def noHaySubsecuenciasCargadas(trial, selected_trials):
+#Chequea si el trial que voy a cargar tiene subsecuencias ya utilizadas 
+def noHaySubsecuenciasCargadas(trial, selected_trials): #Para construccion de menor a mayor
 	print ("Analizo: "+"".join(trial))
 	#Veo si no hay substrings con los anteriores (los de menor longitud)
 	for j in range(1,len(trial)-1):
@@ -82,12 +82,10 @@ def total_distance(selected_trials):
 letters = list(trials_raw.box_positions.keys())
 
 #Desordeno la lista de letras
-#random.shuffle(letters)
-
-letters = ['B', 'C', 'G', 'E', 'H', 'F', 'A', 'I', 'D']
+random.shuffle(letters)
 
 print (letters)
-input()
+#input()
 
 source = "".join(letters)
 
@@ -97,10 +95,10 @@ data.append(["Trial","NumberMoves","Leftness","Frontness","Length"])
 max_distance = 0
 selected_trials = [['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0]]
 data_trial = []
-#for i in range(8,0,-1): #Construyo de mayor a menor
-for i in range(0,8+1): #Construyo de menor a mayor
-	#max_distance = 0
-	min_distance = 100
+for i in range(8,0,-1): #Construyo de mayor a menor
+#for i in range(0,8+1): #Construyo de menor a mayor
+	max_distance = 0 #maximo
+	#min_distance = 100 #minimo
 	c = 0
 	for seq in itertools.combinations(letters,i):
 		#print ("for ", "".join(seq))
@@ -112,13 +110,13 @@ for i in range(0,8+1): #Construyo de menor a mayor
 						trials_raw.frontness(trial),    # frontness length
 						sum(trials_raw.distances(trial)),    # length
 			]) #ntrial,  umber, leftness, frontness, length
-			#if sum(trials_raw.distances(trial)) >= max_distance and notHasSubsequence(trial,selected_trials):
-			#if sum(trials_raw.distances(trial)) <= min_distance and notHasSubsequence(trial,selected_trials):
-			#if sum(trials_raw.distances(trial)) >= max_distance and noHaySubsecuenciasCargadas(trial, selected_trials):
-			if sum(trials_raw.distances(trial)) <= min_distance and noHaySubsecuenciasCargadas(trial, selected_trials):
+			if sum(trials_raw.distances(trial)) >= max_distance and notHasSubsequence(trial,selected_trials): #mayor a menor, maximo
+			#if sum(trials_raw.distances(trial)) <= min_distance and notHasSubsequence(trial,selected_trials): #mayor a menor, minimo
+			#if sum(trials_raw.distances(trial)) >= max_distance and noHaySubsecuenciasCargadas(trial, selected_trials): #menor a mayor, maximo
+			#if sum(trials_raw.distances(trial)) <= min_distance and noHaySubsecuenciasCargadas(trial, selected_trials): #menor a mayor, minimo
 				print("Va ganando ","".join(trial)," con distancia: ",sum(trials_raw.distances(trial)))
-				#max_distance = sum(trials_raw.distances(trial))
-				min_distance = sum(trials_raw.distances(trial))
+				max_distance = sum(trials_raw.distances(trial)) #maximo
+				#min_distance = sum(trials_raw.distances(trial)) #minimo
 				data_trial = ["".join(trial),sum(trials_raw.distances(trial))]
 				selected_trials[i-1] = data_trial
 				print (selected_trials)
