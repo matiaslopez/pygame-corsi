@@ -148,14 +148,7 @@ for i in range(start_index,end_index,step):
 	distance_reference = reset_distance_reference(difficulty)
 	for seq in itertools.combinations(letters,i):
 		#print ("for ", "".join(seq))
-		for trial in itertools.permutations(seq):
-			#data.append(["".join(trial),                  #trial
-			#			i,                             # number
-			#			trials_raw.leftness(trial),     # leftness
-			#			trials_raw.frontness(trial),    # frontness length
-			#			sum(trials_raw.distances(trial)),    # length
-			#]) #ntrial,  umber, leftness, frontness, length
-			
+		for trial in itertools.permutations(seq):			
 			#print ("Evaluo: ", "".join(trial))
 			sum_distances_trials = sum(trials_raw.distances(trial))
 
