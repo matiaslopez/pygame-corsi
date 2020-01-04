@@ -4,6 +4,7 @@ import csv
 import statistics
 import random
 from random import shuffle
+from collections import deque
 
 #Chequea que el todo trial no sea subsecuencia de los ya cargados (pero no partes de el)
 def notIsSubsequence(trial,selected_trials):
@@ -130,6 +131,7 @@ letters = list(trials_raw.box_positions.keys())
 
 #Desordeno la lista de letras
 #random.shuffle(letters)
+#letters = ['I', 'C', 'H', 'G', 'B', 'F', 'E', 'D', 'A']
 
 print (letters)
 input()
@@ -140,10 +142,21 @@ data = []
 seqs = []
 data.append(["Trial","NumberMoves","Leftness","Frontness","Length"])
 max_distance = 0
-selected_trials = [['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0]]
+#selected_trials = [['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0]]
+selected_trials = []
+
+for s in range(trial_max_length*trials_per_length):
+	selected_trials.append(['X',0])
+
+#Multiplicador para la cantidad de variantes
+best_sequences_multiplier = 4
+best_trials = deque(maxlen=trials_per_length*best_sequences_multiplier)
 data_trial = []
 for i in range(start_index,end_index,step):
 	print ("Index: ",i)
+	best_trials.clear()
+	#Cantidad de secuencias de esta longitud insertadas
+	sequences_inserted = 0
 	#Reinicio distance_reference
 	distance_reference = reset_distance_reference(difficulty)
 	for seq in itertools.combinations(letters,i):
@@ -179,10 +192,20 @@ for i in range(start_index,end_index,step):
 			if add_trial:
 					print("Va ganando ","".join(trial)," con distancia: ",str(sum_distances_trials))
 					data_trial = ["".join(trial),sum_distances_trials]
-					selected_trials[i-1] = data_trial
+					#Agrego a la lista de mejores secuencias
+					best_trials.appendleft(data_trial)
+					print("Best trials: ",best_trials)
 					distance_reference = sum_distances_trials
-					print (selected_trials)
 
+	#Al finalizar de recorrer las posibilidades para esa longitud
+	for k in range(trials_per_length):
+		#Selecciono al azar
+		sel_trial = random.choice(best_trials)
+		selected_trials[i*trials_per_length-1-sequences_inserted] = sel_trial
+		#Elimino para no volver a elegirlo
+		best_trials.remove(sel_trial)
+		sequences_inserted+=1
+		print (selected_trials)
 
 print (selected_trials)
 array_apariciones = cantApariciones(letters,selected_trials)
