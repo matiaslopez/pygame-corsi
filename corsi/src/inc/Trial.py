@@ -67,9 +67,9 @@ class Trial():
             return False
 
     def next_by_usr(self, side=""):
+        self.side_clicked = side
         if self.state == ANSW:
             self.next()
-            self.side_clicked = side
 
 
     def next(self):
