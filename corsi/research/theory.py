@@ -2,6 +2,7 @@ import trials_raw
 import itertools
 import csv
 import statistics
+import json
 import random
 from random import shuffle
 from collections import deque
@@ -20,10 +21,10 @@ def notIsSubsequence(trial,selected_trials):
 	return True
 
 #Chequea que el trial no contenga subsecuencias (tomando de a 2) de los ya cargados
-def notHasSubsequence(trial,selected_trials, sum_distances_trials): #Para construccion de mayor a menor
+def notHasSubsequence(trial,selected_trials, sum_distances_trials,sequences_inserted): #Para construccion de mayor a menor
 	print ("Analizo: "+"".join(trial),"con distancia: ",sum_distances_trials)
 	#Veo si no hay substrings con los anteriores (los de mayor longitud)
-	for j in range(len(trial),len(selected_trials)):
+	for j in range(len(selected_trials)-sequences_inserted,len(selected_trials)):
 		#Si no hay con quien analizar, salto
 		if selected_trials[j][0] == 'X':
 			return True
@@ -42,10 +43,10 @@ def notHasSubsequence(trial,selected_trials, sum_distances_trials): #Para constr
 	return True
 
 #Chequea si el trial que voy a cargar tiene subsecuencias ya utilizadas 
-def noHaySubsecuenciasCargadas(trial, selected_trials, sum_distances_trials): #Para construccion de menor a mayor
+def noHaySubsecuenciasCargadas(trial, selected_trials, sum_distances_trials,sequences_inserted): #Para construccion de menor a mayor
 	print ("Analizo: "+"".join(trial),"con distancia: ",sum_distances_trials)
 	#Veo si no hay substrings con los anteriores (los de menor longitud)
-	for j in range(1,len(trial)-1):
+	for j in range(1,sequences_inserted-1):
 		#Si no hay con quien analizar, salto
 		if selected_trials[j][0] == 'X':
 			return True
@@ -138,6 +139,8 @@ input()
 
 source = "".join(letters)
 
+test_trials = ['A','BC','D','EF']
+
 data = []
 seqs = []
 data.append(["Trial","NumberMoves","Leftness","Frontness","Length"])
@@ -145,7 +148,7 @@ max_distance = 0
 #selected_trials = [['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0],['X',0]]
 selected_trials = []
 
-for s in range(trial_max_length*trials_per_length):
+for s in range(4,trial_max_length*trials_per_length+4):
 	selected_trials.append(['X',0])
 
 #Multiplicador para la cantidad de variantes
@@ -170,22 +173,22 @@ for i in range(start_index,end_index,step):
 
 			#Si hay que armar protocolos faciles y de menor a mayor
 			if difficulty == "e" and mayor_menor == "n":
-				if sum_distances_trials <= distance_reference and noHaySubsecuenciasCargadas(trial,selected_trials,sum_distances_trials): #menor a Mayor, minimo
+				if sum_distances_trials <= distance_reference and noHaySubsecuenciasCargadas(trial,selected_trials,sum_distances_trials,sequences_inserted): #menor a Mayor, minimo
 					add_trial = True
 
 			#Si hay que armar protocolos faciles y de mayor a menor
 			elif difficulty == "e" and mayor_menor == "y":
-				if sum_distances_trials <= distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials): #mayor a menor, minimo
+				if sum_distances_trials <= distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,sequences_inserted): #mayor a menor, minimo
 					add_trial = True
 
 			#Si hay que armar protocolos dificiles y de menor a mayor
 			elif difficulty == "h" and mayor_menor == "n":
-				if sum_distances_trials >= distance_reference and noHaySubsecuenciasCargadas(trial, selected_trials,sum_distances_trials): #menor a mayor, maximo
+				if sum_distances_trials >= distance_reference and noHaySubsecuenciasCargadas(trial, selected_trials,sum_distances_trials,sequences_inserted): #menor a mayor, maximo
 					add_trial = True
 
 			#Si hay que armar protocolos dificiles y de mayor a menor
 			elif difficulty == "h" and mayor_menor == "y":
-				if sum_distances_trials >= distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials): #mayor a menor, maximo
+				if sum_distances_trials >= distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,sequences_inserted): #mayor a menor, maximo
 					add_trial = True
 
 			#Si hay que agregar el Trial
@@ -207,11 +210,25 @@ for i in range(start_index,end_index,step):
 		sequences_inserted+=1
 		print (selected_trials)
 
+print("Trials generados: ")
 print (selected_trials)
 array_apariciones = cantApariciones(letters,selected_trials)
 print ("Varianza: ",str(statistics.variance(array_apariciones)))
 print ("Distancia: ",str(total_distance(selected_trials)))
 
-#with open("theory.csv", 'w') as fp:
-#    a = csv.writer(fp, delimiter=';')
-#    a.writerows(data)
+json_trials = ""
+
+#Armo formato json para protocolo
+for i in range(len(selected_trials)+len(test_trials)):
+	if i <=3:
+		registro = "\""+format(i+1)+"\": [\""+test_trials[i]+"\", \"True\"],\n"
+		json_trials+=registro
+	else:
+		registro = "\""+format(i+1)+"\": [\""+selected_trials[i-4][0]+"\", \"False\"],\n"
+		json_trials+=registro
+
+#Le saco la ultima coma
+json_trials = json_trials[0:-2]
+
+with open('trials.txt', 'w') as outfile:
+    outfile.write(json_trials)
