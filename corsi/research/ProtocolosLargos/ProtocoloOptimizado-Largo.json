@@ -1,6 +1,6 @@
 {
     "protocolo": {
-        "nombreProtocolo": "MejorProtocoloCorto"
+        "nombreProtocolo": "MejorProtocoloLargo"
     },
     "properties": {
         "tiempoEncendidoLuz": 500,
@@ -41,21 +41,19 @@
 	"4": ["EF", "True"],
 	"5": ["I", "False"],
 	"6": ["E", "False"],
-	"7": ["AD", "False"],
-	"8": ["FC", "False"],
-	"9": ["DHE", "False"],
-	"10": ["ABI", "False"],
-	"11": ["IGFC", "False"],
-	"12": ["ADBE", "False"],
-	"13": ["EFCID", "False"],
-	"14": ["GHIEB", "False"],
-	"15": ["DGHCEB", "False"],
-	"16": ["HEFIBC", "False"],
-	"17": ["CBDAIHG", "False"],
-	"18": ["DGABCEF", "False"],
-	"19": ["HADEIBCF", "False"],
-	"20": ["GAHIFEBD", "False"]
+	"7": ["DF", "False"],
+	"8": ["CG", "False"],
+	"9": ["FDH", "False"],
+	"10": ["EGF", "False"],
+	"11": ["HBDE", "False"],
+	"12": ["ICAF", "False"],
+	"13": ["FHAGB", "False"],
+	"14": ["BDGCA", "False"],
+	"15": ["BACGDF", "False"],
+	"16": ["IDFABH", "False"],
+	"17": ["GCHDIAE", "False"],
+	"18": ["AGFDCHB", "False"],
+	"19": ["EDCIGFAH", "False"],
+	"20": ["AFIBHCGD", "False"]
 	}
 }
-
-

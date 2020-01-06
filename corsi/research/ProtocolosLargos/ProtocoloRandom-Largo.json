@@ -1,6 +1,6 @@
 {
     "protocolo": {
-        "nombreProtocolo": "MejorProtocoloLargo"
+        "nombreProtocolo": "ProtocoloLargoRandom"
     },
     "properties": {
         "tiempoEncendidoLuz": 500,
@@ -35,25 +35,25 @@
 	"luzTerminaTomaDatos":"True"
     },
     "trials": {
-	"1": ["A", "True"],
-	"2": ["BC", "True"],
-	"3": ["D", "True"],
-	"4": ["EF", "True"],
-	"5": ["I", "False"],
-	"6": ["E", "False"],
-	"7": ["DF", "False"],
-	"8": ["CG", "False"],
-	"9": ["FDH", "False"],
-	"10": ["EGF", "False"],
-	"11": ["HBDE", "False"],
-	"12": ["ICAF", "False"],
-	"13": ["FHAGB", "False"],
-	"14": ["BDGCA", "False"],
-	"15": ["BACGDF", "False"],
-	"16": ["IDFABH", "False"],
-	"17": ["GCHDIAE", "False"],
-	"18": ["AGFDCHB", "False"],
-	"19": ["EDCIGFAH", "False"],
-	"20": ["AFIBHCGD", "False"]
+		"1": ["A", "True"],
+		"2": ["BC", "True"],
+		"3": ["D", "True"],
+		"4": ["EF", "True"],
+		"5": ["E", "False"],
+		"6": ["F", "False"],
+		"7": ["DF", "False"],
+		"8": ["AH", "False"],
+		"9": ["DAB", "False"],
+		"10": ["CBD", "False"],
+		"11": ["HAIG", "False"],
+		"12": ["CABG", "False"],
+		"13": ["FACHG", "False"],
+		"14": ["FACGH", "False"],
+		"15": ["FHCIGE", "False"],
+		"16": ["CDIEGB", "False"],
+		"17": ["EBHAFDC", "False"],
+		"18": ["CEDBAGI", "False"],
+		"19": ["EAIBFGCH", "False"],
+		"20": ["EHBICGFA", "False"]
 	}
 }
