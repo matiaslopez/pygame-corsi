@@ -1,0 +1,26 @@
+"1": ["A", "True"],
+"2": ["BC", "True"],
+"3": ["D", "True"],
+"4": ["EF", "True"],
+"5": ["G", "False"],
+"6": ["FC", "False"],
+"7": ["CBA", "False"],
+"8": ["ADBE", "False"],
+"9": ["BFIEC", "False"],
+"10": ["ECFIDG", "False"],
+"11": ["CEABDHI", "False"],
+"12": ["GAHIFEBD", "False"]
+
+Trials generados: 
+[['G', 0], ['FC', 1.3038404810405297], ['CBA', 4.2045907545531707], ['ADBE', 4.3927692993684619], ['BFIEC', 7.0721937932395731], ['ECFIDG', 8.7284352650870964], ['CEABDHI', 13.169375605247033], ['GAHIFEBD', 13.914681320152209]]
+G  aparece:  3
+D  aparece:  4
+H  aparece:  2
+E  aparece:  5
+A  aparece:  4
+B  aparece:  5
+C  aparece:  5
+F  aparece:  4
+I  aparece:  4
+Varianza:  1
+Distancia:  52.7858865187
