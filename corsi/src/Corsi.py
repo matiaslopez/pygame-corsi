@@ -386,8 +386,8 @@ def main():
     SCREEN_RES = (int(experiment["screen_res"]["x"]), int(experiment["screen_res"]["y"]))
 
     pygame.init()
-    pygame.display.set_mode(SCREEN_RES)
-    # pygame.display.set_mode(SCREEN_RES,pygame.FULLSCREEN)
+    # pygame.display.set_mode(SCREEN_RES)
+    pygame.display.set_mode(SCREEN_RES,pygame.FULLSCREEN)
 
 
     game = Corsi(experiment)
