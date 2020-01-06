@@ -58,6 +58,50 @@ def dameDosMejoresSecuencias(secs):
 
     print secsElegidas
 
+#secs26PC = ["AD","AD","FC","AD"]
+#dameDosMejoresSecuencias(secs26PC)
+#(('AD', 'FC'), 6.0)
+
+#secs37PC = ["DHE","ABI","CBA","IEC"]
+#dameDosMejoresSecuencias(secs37PC)
+#(('DHE', 'ABI'), 9.0)
+#(('DHE', 'CBA'), 9.0)
+#(('DHE', 'IEC'), 8.0)
+#(('ABI', 'IEC'), 8.0)
+#(('CBA', 'IEC'), 8.0)
+
+# secs48PC = ["BFEC","IGFC","ADBE","FCBE"]
+# dameDosMejoresSecuencias(secs48PC)
+# (('IGFC', 'ADBE'), 12.0)
+# (('BFEC', 'ADBE'), 10.0)
+# (('IGFC', 'FCBE'), 10.0)
+# (('BFEC', 'IGFC'), 9.0)
+
+# secs59PC = ["EFCID","GHIEB","BFIEC","GHIFC"]
+# dameDosMejoresSecuencias(secs59PC)
+# (('EFCID', 'GHIEB'), 13.0)
+# (('EFCID', 'GHIFC'), 12.0)
+# (('EFCID', 'BFIEC'), 10.0)
+# (('GHIEB', 'BFIEC'), 10.0)
+# (('BFIEC', 'GHIFC'), 10.0)
+
+# secs610PC = ["DGHCEB","HEFIBC","ECFIDG","DHIBCE"]
+# dameDosMejoresSecuencias(secs610PC)
+# (('DGHCEB', 'HEFIBC'), 14.0)
+# (('DGHCEB', 'ECFIDG'), 14.0)
+# (('ECFIDG', 'DHIBCE'), 14.0)
+# (('HEFIBC', 'ECFIDG'), 12.0)
+
+# secs711PC = ["BDAHGIC","CBDAIHG","CEABDHI","DGABCEF"]
+# dameDosMejoresSecuencias(secs711PC)
+# (('CBDAIHG', 'DGABCEF'), 16.0)
+# (('BDAHGIC', 'DGABCEF'), 15.0)
+# (('BDAHGIC', 'CEABDHI'), 14.0)
+# (('CEABDHI', 'DGABCEF'), 14.0)
+
+secs812PC = ["HADEIBCF","AGDECFBH","GAHIFEBD","AEICFDGB"]
+dameDosMejoresSecuencias(secs812PC)
+
 
 
 #secs26PL = ["AF","DF","CG","GF"]
