@@ -53,8 +53,14 @@ def notHasSubsequence(trial,selected_trials, sum_distances_trials,total_sequence
 #Chequea si el trial que voy a cargar tiene subsecuencias ya utilizadas 
 def noHaySubsecuenciasCargadas(trial, selected_trials, sum_distances_trials,total_sequences_inserted): #Para construccion de menor a mayor
 	#print ("Analizo: "+"".join(trial),"con distancia: ",sum_distances_trials)
+	#Si hay al menos 5 insertados, comparo con menos cantidad
+	if (total_sequences_inserted < 5):
+		start_index = 0
+	else:
+		start_index = total_sequences_inserted-5
+
 	#Veo si no hay substrings con los anteriores (los de menor longitud)
-	for j in range(1,total_sequences_inserted-1):
+	for j in range(start_index,total_sequences_inserted):
 		#Si no hay con quien analizar, salto
 		if selected_trials[j][0] == 'X':
 			return True
@@ -87,8 +93,6 @@ def best_sequences_has_not_subsequences(trial,best_trials):
 				#print(junto, " is in ",bt[0])
 				return False
 
-
-
 	return True
 
 #Cuenta la cantidad de apariciones de cada letra en los trials seleccionados
@@ -118,9 +122,9 @@ def reset_distance_reference(difficulty):
 
 
 #Consulto parametros al usuario
-print("Longitud maxima: (1-9)[8]")
+print("Longitud maxima: (2-9)[8]")
 trial_max_length = input()
-if trial_max_length != "" and 1 <= int(trial_max_length) <= 9:
+if trial_max_length != "" and 2 <= int(trial_max_length) <= 9:
 	trial_max_length = int(trial_max_length)
 else:
 	trial_max_length = 8
@@ -134,7 +138,7 @@ else:
 
 #Inicializo array
 selected_trials = []
-for s in range(4,trial_max_length*trials_per_length+4):
+for s in range(4,(trial_max_length-1)*trials_per_length+4):
 	selected_trials.append(['X',0])
 
 
@@ -148,32 +152,18 @@ else:
 	distance_reference = 0
 	difficulty = "h"
 
-print("Construyo menor a mayor (n) o mayor a menor (y): [y]")
+print("Construyo menor a mayor (n) o mayor a menor (y): [n]")
 mayor_menor = input()
-#Si eligio de menor a mayor
-if mayor_menor == "n":
-	start_index = 2
-	end_index = trial_max_length+1
-	step = 1
 
-	random.shuffle(shuffle_letters)
-
-	#Elijo los de longitud 1
-	for k in range(trials_per_length):
-		random.shuffle(shuffle_letters)	
-		#Selecciono al azar
-		sel_trial = shuffle_letters[0]
-		data_trial = [sel_trial,0]
-		selected_trials[total_sequences_inserted] = data_trial
-		#Elimino para no volver a elegirlo
-		shuffle_letters.remove(sel_trial)
-		total_sequences_inserted+=1	
-else: #Si eligio de mayor a menor
-	mayor_menor = "y"
+if mayor_menor == "y": #Si eligio de mayor a menor
 	start_index = trial_max_length
 	end_index = 1
 	step = -1
-
+else: #Si eligio de menor a mayor
+	mayor_menor = "n"
+	start_index = 2
+	end_index = trial_max_length+1
+	step = 1
 
 print (letters)
 print(selected_trials)
@@ -192,6 +182,7 @@ max_distance = 0
 #Multiplicador para la cantidad de variantes
 best_sequences_multiplier = 4
 best_trials = deque(maxlen=trials_per_length*best_sequences_multiplier)
+#best_trials = deque(maxlen=trials_per_length)
 data_trial = []
 for i in range(start_index,end_index,step):
 	#Desordeno la lista de letras
@@ -210,43 +201,43 @@ for i in range(start_index,end_index,step):
 			#print ("Evaluo: ", "".join(trial))
 			sum_distances_trials = sum(trials_raw.distances(trial))
 
-			#Si todavia no agregue un minimo, determino que se agregue por mas que sea feo
-			#Esto me evita que pinche por haber empezado a seleccionar entre los y no llegue a la cantidad minima
-			if (num_iteration < trials_per_length):
-				#print("Entra de una: ","".join(trial))
-				add_trial = True
-				num_iteration+=1
-			else:	
-				#A menos que mejore, no agrego trial
-				add_trial = False
+		# #Si todavia no agregue un minimo, determino que se agregue por mas que sea feo
+		# #Esto me evita que pinche por haber empezado a seleccionar entre los y no llegue a la cantidad minima
+		# if (num_iteration < trials_per_length):
+		# 	#print("Entra de una: ","".join(trial))
+		# 	add_trial = True
+		# 	num_iteration+=1
+		# else:	
+		 	#A menos que mejore, no agrego trial
+			add_trial = False
 
-				#Si hay que armar protocolos faciles y de menor a mayor
-				if difficulty == "e" and mayor_menor == "n":
-					if sum_distances_trials < distance_reference and noHaySubsecuenciasCargadas(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #menor a Mayor, minimo
-						#Comparo contra las temporales
-							if best_sequences_has_not_subsequences(trial,best_trials):
-								add_trial = True
+			#Si hay que armar protocolos faciles y de menor a mayor
+			if difficulty == "e" and mayor_menor == "n":
+				if sum_distances_trials < distance_reference and noHaySubsecuenciasCargadas(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #menor a Mayor, minimo
+					#Comparo contra las temporales
+						if best_sequences_has_not_subsequences(trial,best_trials):
+							add_trial = True
 
-				#Si hay que armar protocolos faciles y de mayor a menor
-				elif difficulty == "e" and mayor_menor == "y":
-					if sum_distances_trials < distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #mayor a menor, minimo
-						#Comparo contra las temporales
-							if best_sequences_has_not_subsequences(trial,best_trials):
-								add_trial = True
+			#Si hay que armar protocolos faciles y de mayor a menor
+			elif difficulty == "e" and mayor_menor == "y":
+				if sum_distances_trials < distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #mayor a menor, minimo
+					#Comparo contra las temporales
+						if best_sequences_has_not_subsequences(trial,best_trials):
+							add_trial = True
 
-				#Si hay que armar protocolos dificiles y de menor a mayor
-				elif difficulty == "h" and mayor_menor == "n":
-					if sum_distances_trials > distance_reference and noHaySubsecuenciasCargadas(trial, selected_trials,sum_distances_trials,total_sequences_inserted): #menor a mayor, maximo
-						#Comparo contra las temporales
-							if best_sequences_has_not_subsequences(trial,best_trials):
-								add_trial = True
+			#Si hay que armar protocolos dificiles y de menor a mayor
+			elif difficulty == "h" and mayor_menor == "n":
+				if sum_distances_trials > distance_reference and noHaySubsecuenciasCargadas(trial, selected_trials,sum_distances_trials,total_sequences_inserted): #menor a mayor, maximo
+					#Comparo contra las temporales
+						if best_sequences_has_not_subsequences(trial,best_trials):
+							add_trial = True
 
-				#Si hay que armar protocolos dificiles y de mayor a menor
-				elif difficulty == "h" and mayor_menor == "y":
-					if sum_distances_trials > distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #mayor a menor, maximo
-						#Comparo contra las temporales
-							if best_sequences_has_not_subsequences(trial,best_trials):
-								add_trial = True
+			#Si hay que armar protocolos dificiles y de mayor a menor
+			elif difficulty == "h" and mayor_menor == "y":
+				if sum_distances_trials > distance_reference and notHasSubsequence(trial,selected_trials,sum_distances_trials,total_sequences_inserted): #mayor a menor, maximo
+					#Comparo contra las temporales
+						if best_sequences_has_not_subsequences(trial,best_trials):
+							add_trial = True
 
 			#Si hay que agregar el Trial
 			if add_trial:
@@ -255,34 +246,22 @@ for i in range(start_index,end_index,step):
 					#Agrego a la lista de mejores secuencias
 					best_trials.appendleft(data_trial)
 					#print("Best trials: ",best_trials)
+					#input()
 					distance_reference = sum_distances_trials
 
 	#Al finalizar de recorrer las posibilidades para esa longitud
 	for k in range(trials_per_length):
 		#Selecciono al azar
 		sel_trial = random.choice(best_trials)
-		selected_trials[i*trials_per_length-1-sequences_inserted] = sel_trial
+		selected_trials[i*trials_per_length-4+sequences_inserted] = sel_trial
 		#Elimino para no volver a elegirlo
 		best_trials.remove(sel_trial)
 		sequences_inserted+=1
 		total_sequences_inserted+=1
 		print (selected_trials)
 
-#Si se construyo de mayor a menor, tengo que completar los de longitud 1
-if mayor_menor == "y":
-	sequences_inserted = 0
-	random.shuffle(shuffle_letters)
-	#Elijo los de longitud 1
-	for k in range(trials_per_length):
-		random.shuffle(shuffle_letters)	
-		#Selecciono al azar
-		sel_trial = shuffle_letters[0]
-		data_trial = [sel_trial,0]
-		selected_trials[sequences_inserted] = data_trial
-		#Elimino para no volver a elegirlo
-		shuffle_letters.remove(sel_trial)
-		sequences_inserted+=1	
-
+#selected_trials = [['CI', 2.5465663156493688], ['AF', 4.718315377335432], ['EIG', 3.7837065525672413], ['FBC', 3.989457745842649], ['BACD', 10.510972570693527], ['DCGB', 11.695386943927009], ['CEAID', 10.53479450854563], ['CHAFE', 13.359770070414678], ['IFGEBA', 13.39742254660991], ['DBEHCA', 14.004627912917869], ['BIHDGEC', 12.1102144876221], ['DIGHBAC', 16.452949334268038], ['GADCIFHE', 17.493655490522194], ['GDHAEFIB', 16.1998722513828]]
+#selected_trials = [['IG', 2.4627220712049507], ['AI', 3.438386249390839], ['EBA', 3.763627349568119], ['CGA', 6.912614297708431], ['IEFC', 4.101307268426162], ['IHGD', 4.377106021207884], ['HDABI', 8.214023416434735], ['AGHEB', 7.490400975095277], ['CEGADB', 10.180732422097144], ['BEDHIG', 9.8569588763519], ['BCDEIFH', 14.51610681356319], ['GBIDHFC', 15.215536127771989], ['FEDIGACB', 17.138275366649765], ['GDABIEHC', 15.185178745925693]]
 
 print("Trials generados: ")
 print (selected_trials)
