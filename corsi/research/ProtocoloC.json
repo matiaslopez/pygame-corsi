@@ -1,0 +1,53 @@
+{
+    "protocolo": {
+        "nombreProtocolo": "ProtocoloC"
+    },
+    "properties": {
+		"tiempoEncendidoLuz": 750,
+		"tiempoEntreLuces": 750,
+		"tiempoComienzaIntento": 0,
+		"timeoutRespuesta": 35000,
+		"cantErroresCorte": 0,
+		"reverso": "False",
+		"botonRojoIniciaTrial":"False",
+		"luzComienzaSecuencia":"True",
+		"colorLuzComienzaSecuencia":"blue",
+		"tiempoLuzComienzaSecuencia":"500",
+		"repeticionLuzComienzaSecuencia":"3",
+		"intervaloRepeticionLuzComienzaSecuencia":"100",
+		"luzEsperaBotones":"True",
+		"colorLuzEsperaBotones":"blue",
+		"luzAnalisisIntento":"False",
+		"colorLuzAnalisisIntento":"yellow",
+		"feedbackLuces": "False",
+		"colorSecuenciaCorrecta":"green",
+		"colorSecuenciaIncorrecta":"red",
+		"tiempoLuzFeedback":"200",
+		"repeticionLuzFeedback":"3",
+		"intervaloRepeticionLuzFeedback":"100",
+		"luzEsperaProxSecuencia": "False",
+		"colorLuzEsperaProxSecuencia": "blue",
+		"feedbackSonido":"False",
+		"luzTerminaTomaDatos":"False"
+    },
+    "trials": {
+		"1": ["A", "True"],
+		"2": ["BC", "True"],
+		"3": ["D", "True"],
+		"4": ["EF", "True"],
+		"5": ["IG", "False"],
+		"6": ["AI", "False"],
+		"7": ["EBA", "False"],
+		"8": ["CGA", "False"],
+		"9": ["IEFC", "False"],
+		"10": ["IHGD", "False"],
+		"11": ["HDABI", "False"],
+		"12": ["AGHEB", "False"],
+		"13": ["CEGADB", "False"],
+		"14": ["BEDHIG", "False"],
+		"15": ["BCDEIFH", "False"],
+		"16": ["GBIDHFC", "False"],
+		"17": ["FEDIGACB", "False"],
+		"18": ["GDABIEHC", "False"]
+	}
+}
