@@ -1,0 +1,16 @@
+{
+    "protocolo": {
+        "nombre": "MuyCorta"
+    },
+    "properties": {
+        "tiempoEncendidoLuz": 1000,
+        "tiempoEntreLuces": 500,
+        "tiempoComienzaIntento": 1000,
+        "timeoutRespuesta": 35000
+    },
+    "trials": {
+        "1": ["B","true"],
+        "2": ["A","false"],
+        "3": ["AB","false"]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "protocolo": {
+        "nombreProtocolo": "ProtocoloL"
+    },
+    "properties": {
+		"tiempoEncendidoLuz": 750,
+		"tiempoEntreLuces": 750,
+		"tiempoComienzaIntento": 0,
+		"timeoutRespuesta": 35000
+    },
+    "trials": {
+    	"1": ["A", "true"],
+		"2": ["BC", "true"],
+		"3": ["D", "true"],
+		"4": ["EF", "true"],
+		"5": ["CI", "false"],
+		"6": ["AF", "false"],
+		"7": ["EIG", "false"],
+		"8": ["FBC", "false"],
+		"9": ["BACD", "false"],
+		"10": ["DCGB", "false"],
+		"11": ["CEAID", "false"],
+		"12": ["CHAFE", "false"],
+		"13": ["IFGEBA", "false"],
+		"14": ["DBEHCA", "false"],
+		"15": ["BIHDGEC", "false"],
+		"16": ["DIGHBAC", "false"],
+		"17": ["GADCIFHE", "false"],
+		"18": ["GDHAEFIB", "false"]
+	}
+}
